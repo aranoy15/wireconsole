@@ -35,6 +35,12 @@ class McpRegs(enum.Enum):
 
 class Mcp23017:
     def __init__(self, address: int):
+        if address < 0:
+            address = 0
+        
+        if address > 7:
+            address = 7
+
         self.__baseAddress = 0x20
         self.__baseAddress |= address
 
@@ -67,8 +73,12 @@ class Mcp23017:
         return (addrA if pin < 8 else addrB)
 
     def readRegister(self, reg: McpRegs) -> int:
-        with SMBusWrapper(1) as bus:
-            result = bus.read_byte_data(self.address, reg.value)
+        result = 0
+        try:
+            with SMBusWrapper(1) as bus:
+                result = bus.read_byte_data(self.address, reg.value)
+        except OSError as err:
+            print('i2c read error')
 
         print('Read register 0x{2:02X} {1}: {0:08b}'.format(result, reg, self.address))
 
@@ -77,8 +87,11 @@ class Mcp23017:
     def writeRegister(self, reg: McpRegs, value: int):
         print('Write register 0x{2:02X} {1}: {0:08b}'.format(value, reg, self.address))
 
-        with SMBusWrapper(1) as bus:
-            bus.write_byte_data(self.address, reg.value, value)
+        try:
+            with SMBusWrapper(1) as bus:
+                bus.write_byte_data(self.address, reg.value, value)
+        except OSError as err:
+            print('i2c write error')
 
     def updateRegisterBit(self, pin: int, value: bool, addrA: McpRegs, addrB: McpRegs):
         regAddr = self.regForPin(pin, addrA, addrB)
@@ -120,8 +133,6 @@ class Mcp23017:
 
 def main():
     print('Start application')
-
-    address = 0x20
 
     mcp = Mcp23017(0)
     print(mcp)
