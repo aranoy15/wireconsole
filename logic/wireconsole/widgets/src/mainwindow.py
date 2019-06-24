@@ -9,6 +9,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super().__init__()
 
         self.setupUi(self)
+        self.showFullScreen()
 
         self.menu = MenuWidget()
         self.draw = DrawWidget()
