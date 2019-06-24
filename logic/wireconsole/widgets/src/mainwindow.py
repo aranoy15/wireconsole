@@ -23,7 +23,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     def eventFilter(self, source, event):
         if event.type() == QtCore.QEvent.KeyPress:
-            print('KeyPress: %s [%r]' % (event.key(), source))
+            if event.key() == QtCore.Qt.Key_D and event.modifiers() == QtCore.Qt.ControlModifier:
+                if self.isFullScreen():
+                    self.showNormal()
+                else:
+                    self.showFullScreen()
             return True
             #event.ignore()
 
