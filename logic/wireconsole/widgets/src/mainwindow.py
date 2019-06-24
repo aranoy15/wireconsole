@@ -18,15 +18,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mainLayout.addWidget(self.draw)
 
         self.menu.pushButton.clicked.connect(self.test)
-    
-    def keyPressEvent(self, event):
-        #super(MyWidget, self).keyPressEvent(event)
 
-        if event.key() == QtCore.Qt.Key_Backspace:
-            print('Backspace pressed')
-        print(event.key())
-        print('Backspace key:', QtCore.Qt.Key_Backspace)
-        #event.ignore()
+        self.installEventFilter(self)
+    
+    def eventFilter(self, source, event):
+        if event.type() == QtCore.QEvent.KeyPress:
+            print('KeyPress: %s [%r]' % (event.key(), source))
+            return True
+            #event.ignore()
+
+        return super(MainWindow, self).eventFilter(source, event)
 
     def resizeEvent(self, event):
         return super(MainWindow, self).resizeEvent(event)
