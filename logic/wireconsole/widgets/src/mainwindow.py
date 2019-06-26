@@ -20,7 +20,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mainLayout.addWidget(self.draw)
 
         self.menu.cmbWireType.currentIndexChanged.connect(self.wireTypeChanged)
-        self.installEventFilter(self)
+        #self.installEventFilter(self)
 
         self.draw.drawTemplate(self.menu.cmbWireType.currentText())
 
@@ -28,18 +28,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def wireTypeChanged(self):
         self.draw.drawTemplate(self.menu.cmbWireType.currentText())
         print("Wire type changed")
-    
-    def eventFilter(self, source, event):
-        if event.type() == QtCore.QEvent.KeyPress:
-            if event.key() == QtCore.Qt.Key_D and event.modifiers() == QtCore.Qt.ControlModifier:
-                if self.isFullScreen():
-                    self.showNormal()
-                else:
-                    self.showFullScreen()
-            return True
-            #event.ignore()
 
-        return super(MainWindow, self).eventFilter(source, event)
+    def keyPressEvent(self, event):
+        #super(MyWidget, self).keyPressEvent(event)
+
+        if event.key() == QtCore.Qt.Key_D and event.modifiers() == QtCore.Qt.ControlModifier:
+            if self.isFullScreen():
+                    self.showNormal()
+            else:
+                self.showFullScreen()
 
     def resizeEvent(self, event):
         return super(MainWindow, self).resizeEvent(event)
