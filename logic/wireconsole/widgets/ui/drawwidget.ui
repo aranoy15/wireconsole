@@ -29,6 +29,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../../resources/template.qrc"/>
+ </resources>
  <connections/>
 </ui>

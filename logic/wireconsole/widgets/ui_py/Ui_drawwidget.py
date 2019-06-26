@@ -26,3 +26,4 @@ class Ui_DrawWidget(object):
         DrawWidget.setWindowTitle(_translate("DrawWidget", "Form"))
 
 
+import  template_rc

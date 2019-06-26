@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets, QtCore
 from logic.wireconsole.widgets.ui_py.Ui_mainwindow import Ui_MainWindow
 from logic.wireconsole.widgets.src.menuwidget import MenuWidget
 from logic.wireconsole.widgets.src.drawwidget import DrawWidget
+from library.wiredata import WireData
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
@@ -9,17 +10,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super().__init__()
 
         self.setupUi(self)
-        self.showFullScreen()
+        #self.showFullScreen()
 
-        self.menu = MenuWidget()
-        self.draw = DrawWidget()
+        self.wireData = WireData()
+        self.menu = MenuWidget(self.wireData)
+        self.draw = DrawWidget(self.wireData)
 
         self.mainLayout.addWidget(self.menu)
         self.mainLayout.addWidget(self.draw)
 
-        self.menu.pushButton.clicked.connect(self.test)
-
+        self.menu.cmbWireType.currentIndexChanged.connect(self.wireTypeChanged)
         self.installEventFilter(self)
+
+        self.draw.drawTemplate(self.menu.cmbWireType.currentText())
+
+    @QtCore.pyqtSlot()
+    def wireTypeChanged(self):
+        self.draw.drawTemplate(self.menu.cmbWireType.currentText())
+        print("Wire type changed")
     
     def eventFilter(self, source, event):
         if event.type() == QtCore.QEvent.KeyPress:
@@ -35,12 +43,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def resizeEvent(self, event):
         return super(MainWindow, self).resizeEvent(event)
-
-    def test(self):
-        print('Click')
-
-    def resizeWindow(self):
-        print('Resize')
 
     def close_window_event(self): 
         pass

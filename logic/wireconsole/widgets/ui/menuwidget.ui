@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="lblStatus">
      <property name="text">
       <string/>
      </property>
@@ -42,9 +42,25 @@
     </spacer>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QComboBox" name="cmbWireType">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnStart">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>Старт</string>
      </property>
     </widget>
    </item>
