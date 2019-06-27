@@ -6,6 +6,12 @@ import enum
 import os
 import inspect
 
+class WireStatus(enum.Enum):
+    NOT = 0
+    OK = 1
+    ERROR = 2
+    PROCESS = 3
+
 class WireData:
 
     def __init__(self):
@@ -31,6 +37,12 @@ class WireData:
     def loadData(self):
         self.__data.clear()
         self.__data = json.loads(self.__getRawData())['data']
+
+        for item in self.__data:
+            item.update({'outsY': {}, 'insY': {}})
+
+            for wire in item['wires']:
+                wire.update({'status': 0})
 
     def __getRawData(self):
         f = QtCore.QFile(self.path)
