@@ -2,6 +2,7 @@ from library.utils import Stoppable, Clearable
 from PyQt5 import QtCore
 from library.wiredata import WireData, WireStatus
 import time
+from library.mcp23017 import Mcp23017
 
 class TestThread(QtCore.QThread, Stoppable, Clearable):
 
