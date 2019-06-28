@@ -12,6 +12,14 @@ class MenuWidget(QtWidgets.QWidget, Ui_MenuWidget):
     startTestSignal = QtCore.pyqtSignal(object)
     cancelTestSignal = QtCore.pyqtSignal()
 
+    @property
+    def startButtonText(self):
+        return "Старт"
+    
+    @property
+    def cancelButtonText(self):
+        return "Завершить"
+
     def __init__(self, data: WireData):
         super().__init__()
         self.setupUi(self)
@@ -33,7 +41,7 @@ class MenuWidget(QtWidgets.QWidget, Ui_MenuWidget):
     def btnStartClicked(self):
         self.btnStart.setEnabled(False)
 
-        if self.btnStart.text() == "Старт":
+        if self.btnStart.text() == self.startButtonText:
             self.startTest()
         else:
             self.cancelTest()
@@ -41,10 +49,14 @@ class MenuWidget(QtWidgets.QWidget, Ui_MenuWidget):
         self.btnStart.setEnabled(True)
 
     def startTest(self):
-        self.btnStart.setText("Завершить")
-        self.startTestSignal.emit()
-
+        self.btnStart.setText(self.cancelButtonText)
+        self.startTestSignal.emit(self.cmbWireType.currentText())
 
     def cancelTest(self):
-        self.btnStart.setText("Старт")
+        self.btnStart.setText(self.startButtonText)
         self.cancelTestSignal.emit()
+
+    def completeTest(self):
+        self.btnStart.setEnabled(False)
+        self.btnStart.setText(self.startButtonText)
+        self.btnStart.setEnabled(True)
