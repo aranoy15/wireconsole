@@ -13,10 +13,11 @@ class Ui_DrawWidget(object):
     def setupUi(self, DrawWidget):
         DrawWidget.setObjectName("DrawWidget")
         DrawWidget.resize(543, 664)
-        self.horizontalLayout = QtWidgets.QHBoxLayout(DrawWidget)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(1, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.horizontalLayout.addItem(spacerItem)
+        self.verticalLayout = QtWidgets.QVBoxLayout(DrawWidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.mainLayout = QtWidgets.QHBoxLayout()
+        self.mainLayout.setObjectName("mainLayout")
+        self.verticalLayout.addLayout(self.mainLayout)
 
         self.retranslateUi(DrawWidget)
         QtCore.QMetaObject.connectSlotsByName(DrawWidget)
@@ -26,4 +27,4 @@ class Ui_DrawWidget(object):
         DrawWidget.setWindowTitle(_translate("DrawWidget", "Form"))
 
 
-import  template_rc
+import template_rc
