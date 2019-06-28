@@ -44,9 +44,9 @@ class TestThread(QtCore.QThread, Stoppable, Clearable):
 
     def readInput(self) -> int:
         value = 0
-        value &= self.__inputs[0].readGPIOAB()
-        value &= self.__inputs[1].readGPIOAB() << 16
-        value &= self.__inputs[2].readGPIOAB() << 32
+        value |= self.__inputs[0].readGPIOAB()
+        value |= self.__inputs[1].readGPIOAB() << 16
+        value |= self.__inputs[2].readGPIOAB() << 32
 
         return value
 
@@ -66,26 +66,31 @@ class TestThread(QtCore.QThread, Stoppable, Clearable):
                 break
 
             if not self.needStop:
-                self.setOutput(wire['outs'])
+                self.setOutput(1 << wire['out'])
                 time.sleep(1)
                 readInputs = self.readInput()
 
                 compareInputs = 0
 
                 for i in wire['ins']:
-                    compareInputs &= (1 << i)
+                    print('i:', i)
+                    compareInputs |= (1 << i)
+                    print('compareInputs:', compareInputs)
+
+                print('Read inputs: {0: 048b}'.format(readInputs))
+                print('Compare inputs: {0: 048b}'.format(compareInputs))
+                print('')
 
                 if readInputs == compareInputs:
                     wire['status'] = int(WireStatus.OK)
                 else:
-                    print('Read inputs: {0: 048b}'.format(readInputs))
-                    print('Compare inputs: {0: 048b}'.format(compareInputs))
 
                     testResult = False
                     wire['status'] = int(WireStatus.ERROR)
                     
                 self.updateWireStatus.emit(wire)
 
+        self.setOutput(0)
         self.completeTest.emit(testResult)
 
 
